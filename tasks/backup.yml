@@ -1,9 +1,7 @@
 ---
 - name: (BACKUP) reformat dict if necessary
   ansible.builtin.set_fact:
-    restic_backups: "{{ restic_backups | default([]) | map('extract', restic_backups) | list }}"
-  when:
-    - restic_backups | type_debug == "dict"
+    restic_backups_formatted: "{% if restic_backups | type_debug == "dict" %}{{ restic_backups | default([]) | map('extract', restic_backups) | list }}{% else %}{{ restic_backups }}{% endif %}"
 
 - name: (BACKUP) Create backup credentials
   ansible.builtin.template:
@@ -13,7 +11,7 @@
     owner: '{{ restic_dir_owner }}'
     group: '{{ restic_dir_group }}'
   no_log: "{{ restic_no_log }}"
-  with_items: '{{ restic_backups }}'
+  with_items: '{{ restic_backups_formatted }}'
   when:
     - item.name is defined
     - item.src is defined or item.stdin is defined
@@ -28,7 +26,7 @@
     owner: '{{ restic_dir_owner }}'
     group: '{{ restic_dir_group }}'
   no_log: "{{ restic_no_log }}"
-  with_items: '{{ restic_backups }}'
+  with_items: '{{ restic_backups_formatted }}'
   when:
     - item.name is defined
     - item.src is defined or item.stdin is defined

@@ -12,7 +12,7 @@
     cron_file: restic_backup
   become: true
   no_log: "{{ restic_no_log }}"
-  with_items: '{{ restic_backups }}'
+  with_items: '{{ restic_backups_formatted }}'
   when:
     - item.name is defined
     - item.scheduled | default(false)

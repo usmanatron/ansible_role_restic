@@ -9,7 +9,7 @@
         state: stopped
         daemon_reload: true
         masked: false
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       ignore_errors: true
       tags: skip_ansible_lint
       failed_when: false
@@ -27,7 +27,7 @@
         state: stopped
         daemon_reload: true
         masked: true
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       when:
         - item.name is defined
         - item.scheduled | default(false)
@@ -42,7 +42,7 @@
       ansible.builtin.file:
         path: "/lib/systemd/system/restic-{{ item.name | replace(' ', '') }}.timer"
         state: absent
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       when:
         - item.name is defined
         - item.scheduled | default(false)
@@ -53,7 +53,7 @@
       ansible.builtin.file:
         path: "/lib/systemd/system/restic-{{ item.name | replace(' ', '') }}.service"
         state: absent
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       when:
         - item.name is defined
         - item.scheduled | default(false)

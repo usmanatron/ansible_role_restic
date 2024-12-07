@@ -6,7 +6,7 @@
     state: 'restarted'
     daemon_reload: true
     masked: false
-  with_items: '{{ restic_backups }}'
+  with_items: '{{ restic_backups_formatted }}'
   ignore_errors: true
   tags: skip_ansible_lint
   when:

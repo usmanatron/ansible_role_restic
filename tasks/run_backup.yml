@@ -3,7 +3,7 @@
   ansible.builtin.command:
     cmd: "/usr/bin/env {{ restic_backup_script_shell }} {{ restic_script_dir }}/backup-{{ item.name | replace(' ', '') }}.sh"
   no_log: "{{ restic_no_log }}"
-  with_items: '{{ restic_backups }}'
+  with_items: '{{ restic_backups_formatted }}'
   when:
     - item.name is defined
   register: result

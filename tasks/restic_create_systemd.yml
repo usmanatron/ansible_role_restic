@@ -14,7 +14,7 @@
         group: 'root'
         mode: '0644'
       no_log: "{{ restic_no_log }}"
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       notify: systemctl restart restic.timer
       when:
         - item.name is defined
@@ -29,7 +29,7 @@
         group: 'root'
         mode: '0644'
       no_log: "{{ restic_no_log }}"
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       when:
         - item.name is defined
         - item.scheduled | default(false)
@@ -41,7 +41,7 @@
         enabled: true
         daemon_reload: true
         masked: false
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       notify: systemctl restart restic.timer
       when:
         - item.name is defined
@@ -55,7 +55,7 @@
         state: started
         daemon_reload: true
         masked: false
-      with_items: '{{ restic_backups }}'
+      with_items: '{{ restic_backups_formatted }}'
       notify: systemctl restart restic.timer
       when:
         - item.name is defined

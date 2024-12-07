@@ -25,7 +25,7 @@
     cron_file: "/etc/crontab"
     user: "root"
   no_log: "{{ restic_no_log }}"
-  with_items: "{{ restic_backups }}"
+  with_items: "{{ restic_backups_formatted }}"
   when:
     - restic_create_schedule | bool
     - item.name is defined
@@ -41,7 +41,7 @@
     state: absent
     search_string: "do1jlr.restic backup {{ item.name }}"
   when: cron_delete.failed is defined and cron_delete.failed
-  with_items: "{{ restic_backups }}"
+  with_items: "{{ restic_backups_formatted }}"
 
 - name: "(SCHEDULE) (OLD) make sure restic script is not in /etc/crontab"
   become: true
@@ -50,4 +50,4 @@
     state: absent
     search_string: "{{ restic_script_dir }}/backup-{{ item.name | replace(' ', '') }}.sh"
   when: cron_delete.failed is defined and cron_delete.failed
-  with_items: "{{ restic_backups }}"
+  with_items: "{{ restic_backups_formatted }}"
